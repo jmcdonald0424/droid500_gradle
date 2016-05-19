@@ -1,0 +1,30 @@
+[
+    {
+        "merged": "C:\\AndroidProjects\\droid500\\app\\build\\intermediates\\res\\merged\\debug\\drawable-nodpi-v4\\heart.png",
+        "source": "C:\\AndroidProjects\\droid500\\app\\src\\main\\res\\drawable-nodpi\\heart.png"
+    },
+    {
+        "merged": "C:\\AndroidProjects\\droid500\\app\\build\\intermediates\\res\\merged\\debug\\drawable-nodpi-v4\\club.png",
+        "source": "C:\\AndroidProjects\\droid500\\app\\src\\main\\res\\drawable-nodpi\\club.png"
+    },
+    {
+        "merged": "C:\\AndroidProjects\\droid500\\app\\build\\intermediates\\res\\merged\\debug\\drawable-nodpi-v4\\spade.png",
+        "source": "C:\\AndroidProjects\\droid500\\app\\src\\main\\res\\drawable-nodpi\\spade.png"
+    },
+    {
+        "merged": "C:\\AndroidProjects\\droid500\\app\\build\\intermediates\\res\\merged\\debug\\drawable-nodpi-v4\\mainatlasgrey.png",
+        "source": "C:\\AndroidProjects\\droid500\\app\\src\\main\\res\\drawable-nodpi\\mainatlasgrey.png"
+    },
+    {
+        "merged": "C:\\AndroidProjects\\droid500\\app\\build\\intermediates\\res\\merged\\debug\\drawable-nodpi-v4\\selectors.xml",
+        "source": "C:\\AndroidProjects\\droid500\\app\\src\\main\\res\\drawable-nodpi\\selectors.xml"
+    },
+    {
+        "merged": "C:\\AndroidProjects\\droid500\\app\\build\\intermediates\\res\\merged\\debug\\drawable-nodpi-v4\\mainatlas.png",
+        "source": "C:\\AndroidProjects\\droid500\\app\\src\\main\\res\\drawable-nodpi\\mainatlas.png"
+    },
+    {
+        "merged": "C:\\AndroidProjects\\droid500\\app\\build\\intermediates\\res\\merged\\debug\\drawable-nodpi-v4\\diamond.png",
+        "source": "C:\\AndroidProjects\\droid500\\app\\src\\main\\res\\drawable-nodpi\\diamond.png"
+    }
+]

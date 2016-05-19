@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bidlayout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">  
+    <GridView
+        android:id="@+id/scoregrid"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:numColumns="6"
+        android:gravity="center"
+        android:background="#222222"
+        android:layout_margin="5dp" />
+    <GridView
+        android:id="@+id/biddisplay"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:numColumns="4"
+        android:gravity="center"
+        android:background="#222222"
+        android:layout_margin="3dp" />
+    <!--<GridView
+        android:id="@+id/bidbuttons"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:numColumns="5"
+        android:gravity="center"
+        android:background="#222222"
+        android:layout_margin="3dp" /> -->
+    <LinearLayout
+        android:id="@+id/bidvaluebuttonlayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">      
+        <Button android:id="@+id/button_bidsix"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="20"
+            android:text="6"
+            android:onClick="setBidPower" />   
+        <Button android:id="@+id/button_bidseven"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="20"
+            android:text="7"
+            android:onClick="setBidPower" />   
+        <Button android:id="@+id/button_bideight"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="20"
+            android:text="8"
+            android:onClick="setBidPower" />   
+        <Button android:id="@+id/button_bidnine"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="20"
+            android:text="9"
+            android:onClick="setBidPower" />   
+        <Button android:id="@+id/button_bidten"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="20"
+            android:text="10"
+            android:onClick="setBidPower" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/bidsuitbuttonlayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">      
+        <ImageButton android:id="@+id/button_bidspades"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="20"
+            android:onClick="setBidSuit"
+            android:src="@drawable/spade" />   
+        <ImageButton android:id="@+id/button_bidclubs"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="20"
+            android:onClick="setBidSuit"
+            android:src="@drawable/club" /> 
+        <ImageButton android:id="@+id/button_biddiamonds"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="20"
+            android:onClick="setBidSuit"
+            android:src="@drawable/diamond" /> 
+        <ImageButton android:id="@+id/button_bidhearts"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="20"
+            android:onClick="setBidSuit"
+            android:src="@drawable/heart" />  
+        <ImageButton android:id="@+id/button_bidnotrump"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="20"
+            android:onClick="setBidSuit"
+            android:src="@drawable/spade" /> 
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/bidconfirm"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <Button android:id="@+id/button_bid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bid"
+                android:onClick="confirmBid" />
+        <Button android:id="@+id/button_pass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pass"
+                android:onClick="passBid" />
+        
+    </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/bidhand"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+        <!--<TableRow
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center_horizontal"
+              android:padding="10dp">
+            <TextView 
+              android:layout_weight="0.16" />
+            <ImageView
+              android:id="@+id/score_header_spade"
+              android:layout_width="10dp"
+              android:layout_height="15dp"
+              android:scaleType="fitXY"
+              android:src="@drawable/spade"
+              android:gravity="center"
+              android:layout_weight="0.16" />
+            <ImageView
+              android:id="@+id/score_header_club"
+              android:layout_width="10dp"
+              android:layout_height="15dp"
+              android:scaleType="fitXY"
+              android:src="@drawable/club"
+              android:gravity="center"
+              android:layout_weight="0.16" />
+            <ImageView
+              android:id="@+id/score_header_diamond"
+              android:layout_width="10dp"
+              android:layout_height="15dp"
+              android:scaleType="fitXY"
+              android:src="@drawable/diamond"
+              android:gravity="center"
+              android:layout_weight="0.16" />
+            <ImageView
+              android:id="@+id/score_header_heart"
+              android:layout_width="5dp"
+              android:layout_height="15dp"
+              android:scaleType="fitXY"
+              android:src="@drawable/heart"
+              android:gravity="center"
+              android:layout_weight="0.16" />     
+            <TextView 
+              android:id="@+id/score_header_notrump"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="NT"
+              android:gravity="center"
+              android:layout_weight="0.16" />
+              
+            
+        </TableRow>
+        <TableRow
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+            
+            <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="6"
+              android:gravity="center"
+              android:layout_weight="0.16" />
+            <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="40"
+              android:gravity="center"
+              android:layout_weight="0.16" />
+            <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="60"
+              android:gravity="center"
+              android:layout_weight="0.16" />
+            <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="80"
+              android:gravity="center"
+              android:layout_weight="0.16" />
+            <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="100"
+              android:gravity="center"
+              android:layout_weight="0.16" />
+            <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="120"
+              android:gravity="center"
+              android:layout_weight="0.16" />
+            
+        </TableRow>
+        
+    </GridView>    --> 
+    
+</LinearLayout>
