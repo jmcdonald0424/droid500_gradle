@@ -7,8 +7,11 @@ import com.fivehundred.droid500.utils.Logger;
 import com.fivehundred.droid500.view.utils.ViewConstants;
 import com.fivehundred.droid500.view.utils.ViewListenerConstants;
 
+import javax.inject.Inject;
+
 public class GameControllerImpl implements GameController {
-        
+
+    @Inject
     public GameControllerImpl(){
         
     }

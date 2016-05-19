@@ -416,7 +416,7 @@ public class GLRenderer implements Renderer {
         setupUvs();
     }
     
-    private void injectIntoObjectGraph(Object object){
+    private void injectIntoObjectGraph(DealerAnimation object){
         MainApplication app = (MainApplication)((MainActivity)context).getApplication();
         app.getMainComponent().inject(object);
     }

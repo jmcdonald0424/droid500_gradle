@@ -22,7 +22,6 @@ public interface MainComponent {
     void inject(GLRenderer renderer);
     void inject(DealerAnimation dealerAnimation);
     void inject(Auction auction);
-    void inject(Object object);
     AnimationController getAnimationController();
     GameControllerImpl getGameController();
     ViewController getViewController();

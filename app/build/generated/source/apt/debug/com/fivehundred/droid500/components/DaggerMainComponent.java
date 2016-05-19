@@ -8,6 +8,7 @@ import com.fivehundred.droid500.game.MainGame;
 import com.fivehundred.droid500.game.MainGame_MembersInjector;
 import com.fivehundred.droid500.game.controllers.GameController;
 import com.fivehundred.droid500.game.controllers.GameControllerImpl;
+import com.fivehundred.droid500.game.controllers.GameControllerImpl_Factory;
 import com.fivehundred.droid500.modules.MainModule;
 import com.fivehundred.droid500.modules.MainModule_ProvideAnimationControllerFactory;
 import com.fivehundred.droid500.modules.MainModule_ProvideGameControllerFactory;
@@ -117,18 +118,18 @@ public final class DaggerMainComponent implements MainComponent {
   }
 
   @Override
-  public void inject(AnimationController animationController) {
-    MembersInjectors.<AnimationController>noOp().injectMembers(animationController);
+  public AnimationController getAnimationController() {
+    return provideAnimationControllerProvider.get();
   }
 
   @Override
-  public void inject(GameControllerImpl gameController) {
-    MembersInjectors.<GameControllerImpl>noOp().injectMembers(gameController);
+  public GameControllerImpl getGameController() {
+    return GameControllerImpl_Factory.create().get();
   }
 
   @Override
-  public void inject(ViewController viewController) {
-    MembersInjectors.<ViewController>noOp().injectMembers(viewController);
+  public ViewController getViewController() {
+    return provideViewControllerProvider.get();
   }
 
   public static final class Builder {
