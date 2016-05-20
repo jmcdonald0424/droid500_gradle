@@ -39,7 +39,7 @@ public class MainActivity extends Activity {
     private MainFragment fragment; // MainFragment allows persistence 
     
     // Views
-    private GLSurf glSurfaceView; // Our OpenGL Surfaceview 
+    private GLSurf glSurfaceView; // Our OpenGL Surfaceview
     private RelativeLayout gameLayout;
     private View bidView;
     private LinearLayout bidValueButtonLayout;

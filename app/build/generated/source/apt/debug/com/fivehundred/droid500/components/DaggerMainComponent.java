@@ -20,7 +20,6 @@ import com.fivehundred.droid500.view.animations.DealerAnimation_MembersInjector;
 import com.fivehundred.droid500.view.controllers.AnimationController;
 import com.fivehundred.droid500.view.controllers.ViewController;
 import dagger.MembersInjector;
-import dagger.internal.MembersInjectors;
 import dagger.internal.Preconditions;
 import dagger.internal.ScopedProvider;
 import javax.annotation.Generated;
@@ -110,11 +109,6 @@ public final class DaggerMainComponent implements MainComponent {
   @Override
   public void inject(Auction auction) {
     auctionMembersInjector.injectMembers(auction);
-  }
-
-  @Override
-  public void inject(Object object) {
-    MembersInjectors.<Object>noOp().injectMembers(object);
   }
 
   @Override
