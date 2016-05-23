@@ -6,7 +6,7 @@ import com.fivehundred.droid500.game.MainGame;
 
 public interface GameController {
 
-    public MainGame createNewGame(int playerCount, Context context);
+    //public MainGame createNewGame(int playerCount, Context context);
     public void startGame(MainGame game);
     public void startNewHand(MainGame game);
     public void sortCards(MainGame game, float ssu);

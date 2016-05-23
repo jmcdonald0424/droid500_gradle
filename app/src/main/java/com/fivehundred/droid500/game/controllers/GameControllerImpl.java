@@ -16,12 +16,12 @@ public class GameControllerImpl implements GameController {
         
     }
 
-    @Override
+    /*@Override
     public MainGame createNewGame(int playerCount, Context context) {
         MainGame newGame = new MainGame(playerCount, context);
 
         return newGame;
-    }
+    }*/
     
     @Override
     public void startGame(MainGame game){

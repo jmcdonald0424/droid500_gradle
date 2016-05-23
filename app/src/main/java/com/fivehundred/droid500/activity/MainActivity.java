@@ -39,7 +39,6 @@ public class MainActivity extends Activity {
     private MainFragment fragment; // MainFragment allows persistence 
     
     // Views
-    private GLSurf glSurfaceView; // Our OpenGL Surfaceview
     private RelativeLayout gameLayout;
     private View bidView;
     private LinearLayout bidValueButtonLayout;
@@ -101,7 +100,7 @@ public class MainActivity extends Activity {
         }
         gameController.startGame(game);
         loadGameGraphics();
-        glSurfaceView.dealCards(game);
+        viewController.animateDealCards(game);
     }
     
     public void confirmBid(View confirmBidButton){
@@ -147,8 +146,11 @@ public class MainActivity extends Activity {
 
         // Attach our surfaceview to our relative layout from our main layout.
         RelativeLayout.LayoutParams glParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        gameLayout.removeAllViews();
-        gameLayout.addView(glSurfaceView, glParams);
+        //gameLayout.removeAllViews();
+        clearMainView();
+        viewController.setLayoutParams(glParams);
+        //gameLayout.addView(viewController.getGlSurfaceView(), glParams);
+        updateMainView();
     }
     
     public void loadLayout(int layout){
@@ -171,13 +173,29 @@ public class MainActivity extends Activity {
         bidDisplay = (GridView)bidView.findViewById(R.id.biddisplay);
         //bidButtons = (GridView)view.findViewById(R.id.bidbuttons);
         bidHand = (RelativeLayout)bidView.findViewById(R.id.bidhand);
+        clearMainView();
+        buildBidView();
+        updateMainView(bidLayout);
+    }
+
+    private void updateMainView(){
+        updateMainView(viewController.getGlSurfaceView());
+    }
+
+    private void updateMainView(final View view){
         runOnUiThread(new Runnable(){
             @Override
             public void run(){
-                // TODO: reduce this processing on this thread
+                gameLayout.addView(view);
+            }
+        });
+    }
+
+    private void clearMainView(){
+        runOnUiThread(new Runnable(){
+            @Override
+            public void run(){
                 gameLayout.removeAllViews();
-                buildBidView();
-                gameLayout.addView(bidLayout);                
             }
         });
     }
@@ -185,13 +203,13 @@ public class MainActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        glSurfaceView.onPause();
+        viewController.onPause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        glSurfaceView.onResume();
+        viewController.onResume();
     }
 
     @Override
@@ -206,7 +224,7 @@ public class MainActivity extends Activity {
         if (fragment == null) {
             fragment = new MainFragment();
             manager.beginTransaction().add(fragment, "game").commit();
-            game = gameController.createNewGame(playerCount, this);
+            game = new MainGame(playerCount, this);//gameController.createNewGame(playerCount, this);
             fragment.setGame(game);
             // Inject into object graph
             MainApplication app = (MainApplication)getApplication();
@@ -214,10 +232,6 @@ public class MainActivity extends Activity {
         } else {
             game = fragment.getGame();
         }
-    }
-
-    public GLSurf getGlSurfaceView() {
-        return glSurfaceView;
     }
 
     public MainGame getGame() {
@@ -232,13 +246,8 @@ public class MainActivity extends Activity {
         return (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
     
-    private void buildMainView(){        
-        // We create our Surfaceview for our OpenGL here.
-        // Preloaded objects can be rendered at this time.
-        // TODO: Consider second thread in the future
-        glSurfaceView = new GLSurf(this);
-        glSurfaceView.getRenderer().loadIntoObjectGraph();
-        glSurfaceView.getRenderer().createCardSprites(game.getDeck());
+    private void buildMainView(){
+        viewController.buildMainView(this);
     }
     
     private void buildBidView(){
@@ -250,8 +259,7 @@ public class MainActivity extends Activity {
         //bidButtons.setAdapter(new BidButtonsAdapter(this, ViewConstants.BID_VALUES));
         //bidHandView = new GLSurf(this);
         //bidHandView.getRenderer().buildCardSprites(game.getMyHand());
-        glSurfaceView.getRenderer().buildCardSprites(game.getMyHand());
-        bidHand.addView(glSurfaceView);
+        bidHand.addView(viewController.buildBidView(game));
     }
     
     public void updateBidDisplay(String bidSuit, int bidPower, int bidIndex){

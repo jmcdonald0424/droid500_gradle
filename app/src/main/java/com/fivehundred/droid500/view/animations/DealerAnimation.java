@@ -47,7 +47,9 @@ public class DealerAnimation{
     
     public void dealCards(){
         if(cardCount > 44){
-            exit();
+            // Sort each hand to organize suits
+            gameController.sortCards(game, ssu);
+            gameController.startBids(game, (MainActivity)context);
         }else{
             if(cardCount % 9 == 0){
                 playerIndex = 4;
@@ -142,11 +144,5 @@ public class DealerAnimation{
                 Logger.logError("getCoordinates failed -- No coordinates found for player: " + playerIndex);
                 return null;
         }*/
-    }
-    
-    private void exit(){        
-        // Sort each hand to organize suits
-        gameController.sortCards(game, ssu);
-        gameController.startBids(game, (MainActivity)context);
     }
 }
