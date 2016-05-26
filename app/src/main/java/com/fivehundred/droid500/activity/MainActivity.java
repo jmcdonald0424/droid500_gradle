@@ -101,6 +101,7 @@ public class MainActivity extends Activity {
         gameController.startGame(game);
         loadGameGraphics();
         viewController.animateDealCards(game);
+        //TODO: relocate gameController.startBids from DealerAnimation to here (must solve UI thread conflict: http://stackoverflow.com/questions/5321344/android-animation-wait-until-finished)
     }
     
     public void confirmBid(View confirmBidButton){
