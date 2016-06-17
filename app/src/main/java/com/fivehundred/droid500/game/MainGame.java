@@ -5,9 +5,11 @@ import android.graphics.PointF;
 import android.util.SparseArray;
 import com.fivehundred.droid500.activity.MainActivity;
 import com.fivehundred.droid500.game.controllers.GameController;
+import com.fivehundred.droid500.utils.ConversionUtils;
 import com.fivehundred.droid500.utils.GameConstants;
 import com.fivehundred.droid500.utils.GameUtils;
 import com.fivehundred.droid500.utils.Logger;
+import com.fivehundred.droid500.view.controllers.ViewController;
 import com.fivehundred.droid500.view.utils.ViewUtils;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,6 +24,7 @@ public class MainGame {
     private List<Card> kitty = new ArrayList<>();
     private int dealerIndex = 0;
     private int currentPlayerIndex = 0;
+    private int bidWinnerIndex = 0;
     private String trumpSuit = "";
     private Hand currentHand;
     private List<Hand> hands = new ArrayList<>();
@@ -36,6 +39,7 @@ public class MainGame {
     private String playerBidSuit;
     
     @Inject GameController gameController;
+    @Inject ViewController viewController;
     
     public MainGame(int playerCount, Context context){
         this.context = context;
@@ -132,13 +136,19 @@ public class MainGame {
         bid.put(playerBidPower, playerBidSuit);
         auction.bid(0, bid);
         auction.rollBids();
+        ((MainActivity)context).processKitty(this);
     }
     
-    public void setWinningBid(int winnerIndex, SparseArray<String> bid){
+    public void setWinningBid(int bidWinnerIndex, SparseArray<String> bid){
         trumpSuit = bid.valueAt(0);
-        bidTeam = winnerIndex % 2;
+        bidTeam = bidWinnerIndex % 2;
         winningBid = bid;
-        currentPlayerIndex = winnerIndex;
+        currentPlayerIndex = bidWinnerIndex;
+        this.bidWinnerIndex = bidWinnerIndex;
+    }
+
+    public Player getBidWinner(){
+        return players.get(bidWinnerIndex);
     }
     
     public void openKitty(int winnerIndex){
@@ -279,6 +289,13 @@ public class MainGame {
             }
         }
     }
+
+    public List<Card> getActiveCards(){
+        List<Card> activeCards = new ArrayList<>();
+        activeCards.addAll(kitty);
+        activeCards.addAll(players.get(currentPlayerIndex).getCards());
+        return activeCards;
+    }
     
     public List<Card> getMyHand(){
         return players.get(0).getCards();
@@ -346,5 +363,9 @@ public class MainGame {
 
     public void setPlayerBidSuit(String playerBidSuit) {
         this.playerBidSuit = playerBidSuit;
+    }
+
+    public SparseArray<String> getWinningBid(){
+        return this.winningBid;
     }
 }

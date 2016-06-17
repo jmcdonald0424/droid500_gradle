@@ -189,6 +189,55 @@ public class Sprite {
         triggerUvUpdate = true;
     }
 
+    public boolean isTouchCollision(float x, float y){
+        if(contains(x,y)){
+            return true;
+        }
+        return false;
+    }
+
+    private boolean contains(float x, float y){
+        if(getBottom() < y && y <= getTop()){
+            if(getLeft() <= x && x < getRight()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void focus(){
+        scale(ViewConstants.FOCUS_SCALE * ViewConstants.FOCUS_MULTIPLIER);
+        translateFocus(1 + ViewConstants.FOCUS_SCALE);
+    }
+
+    public void unfocus(){
+        scale(ViewConstants.FOCUS_SCALE * ViewConstants.UNFOCUS_MULTIPLIER);
+        translateFocus(1 - ViewConstants.FOCUS_SCALE);
+    }
+
+    private void translateFocus(float focusScale){
+        // Translate sprite after focus so bottom left corner remains the same after scaling
+        float dX = scaledBase.right * focusScale - scaledBase.right;
+        float dY = scaledBase.top * focusScale - scaledBase.top;
+        translate(dX, dY);
+    }
+
+    private float getBottom(){
+        return translation.y + scaledBase.bottom;
+    }
+
+    private float getTop(){
+        return translation.y + scaledBase.top;
+    }
+
+    private float getLeft(){
+        return translation.x + scaledBase.left;
+    }
+
+    private float getRight(){
+        return translation.x + scaledBase.right;
+    }
+
     public PointF getTranslation() {
         return translation;
     }

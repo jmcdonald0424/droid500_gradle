@@ -50,7 +50,7 @@ public class Auction{
         }
         Logger.log("Player " + winner + " wins the bid with " + highestBid + " of " + winningSuit);
         game.setWinningBid(winner, allBids.get(winner));
-        gameController.processKitty(game);
+        //gameController.processKitty(game); //moved this call to MainActivity from MainGame
     }
     
     public void bid(int playerIndex, SparseArray<String> bid){

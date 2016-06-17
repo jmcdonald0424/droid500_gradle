@@ -3,6 +3,7 @@ package com.fivehundred.droid500.view;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.PointF;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView.Renderer;
 import android.opengl.GLUtils;
@@ -21,12 +22,15 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 import com.fivehundred.droid500.view.utils.ShaderUtils;
 import com.fivehundred.droid500.view.utils.ViewConstants;
 import com.fivehundred.droid500.view.utils.ViewListenerConstants;
+import com.fivehundred.droid500.view.utils.ViewUtils;
+
 import javax.inject.Inject;
 
 public class GLRenderer implements Renderer {
@@ -326,7 +330,23 @@ public class GLRenderer implements Renderer {
     }
     
     public void processTouchEvent(MotionEvent event) {
-        
+        if(event != null){
+            float touchX = event.getX() - (swp - ViewConstants.BASE_SCALE_MIN * ssu);
+            float touchY = (event.getY() - (shp - ViewConstants.BASE_SCALE_MIN * ssu));
+
+            //Invert Y coordinates for OpenGL system
+            touchY = Math.abs(ViewConstants.BASE_SCALE_MIN * ssu - touchY);
+
+            List<Card> activeCards = getGame().getActiveCards();
+            Collections.reverse(activeCards); // Reverse so touch coordinates apply to top-most card which are drawn last
+
+            for(Card card : activeCards){
+                if(card.isSelected(touchX, touchY)){
+                    card.focus();
+                    return;
+                }
+            }
+        }
     }
     
     public void dealCards(MainGame game){
@@ -349,6 +369,11 @@ public class GLRenderer implements Renderer {
         }
         rebuildSprites();
     }*/
+
+    public void buildCardSprites(){
+        getGame().sortCards(ssu);
+        rebuildSprites();
+    }
     
     public void buildCardSprites(List<Card> cards){
         sprites.clear();
@@ -371,6 +396,15 @@ public class GLRenderer implements Renderer {
             rebuiltSprites.add(card.getSprite());
         }
         addSprites(rebuiltSprites);
+    }
+
+    // Flip the cards to display face and display them side by side
+    public void showCards(List<Card> cards, int position){
+        for(Card card : cards){
+            PointF placeCoordinates = ViewUtils.getPlaceCoordinates(position, cards.indexOf(card), ssu);
+            card.getSprite().setTranslation(placeCoordinates);
+            card.flip();
+        }
     }
     
     private float[] combineArrays(float[] a, float[] b) {
@@ -414,6 +448,16 @@ public class GLRenderer implements Renderer {
         this.sprites.addAll(sprites);
         setupTriangle();
         setupUvs();
+    }
+
+    public void addCardSprites(List<Card> cards){
+        for(Card card : cards){
+            addSprite(card);
+        }
+    }
+
+    public void addSprite(Card card){
+        addSprite(card.getSprite());
     }
     
     private void injectIntoObjectGraph(DealerAnimation object){

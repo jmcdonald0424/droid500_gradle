@@ -47,16 +47,21 @@ public final class R {
         public static final int button_bidsuit=0x7f060002;
         public static final int button_bidten=0x7f06000d;
         public static final int button_bidvalue=0x7f060001;
+        public static final int button_kitty=0x7f06001a;
         public static final int button_pass=0x7f060016;
-        public static final int button_start=0x7f060019;
-        public static final int gamelayout=0x7f060018;
+        public static final int button_start=0x7f06001d;
+        public static final int gamelayout=0x7f06001c;
+        public static final int kittylayout=0x7f060018;
+        public static final int kittyview=0x7f06001b;
         public static final int scoregrid=0x7f060006;
+        public static final int winningbid=0x7f060019;
     }
     public static final class layout {
         public static final int bid_buttons=0x7f030000;
         public static final int bid_display=0x7f030001;
         public static final int bid_portrait=0x7f030002;
-        public static final int main=0x7f030003;
+        public static final int kitty_portrait=0x7f030003;
+        public static final int main=0x7f030004;
     }
     public static final class string {
         public static final int app_name=0x7f050000;

@@ -2,10 +2,15 @@ package com.fivehundred.droid500.game.controllers;
 
 import android.content.Context;
 import com.fivehundred.droid500.activity.MainActivity;
+import com.fivehundred.droid500.game.Card;
 import com.fivehundred.droid500.game.MainGame;
+import com.fivehundred.droid500.game.Player;
 import com.fivehundred.droid500.utils.Logger;
 import com.fivehundred.droid500.view.utils.ViewConstants;
 import com.fivehundred.droid500.view.utils.ViewListenerConstants;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -50,15 +55,34 @@ public class GameControllerImpl implements GameController {
     }
     
     @Override
-    public void startBids(MainGame game, MainActivity mainActivity){
-        mainActivity.loadLayout(ViewListenerConstants.LOAD_BID_LAYOUT);
+    public void startBids(MainGame game){
         Logger.log("STARTING BIDS ::::: Deck size: " + game.getDeck().size());
         game.startBids();
     }
     
     @Override
-    public void processKitty(MainGame game){
-        
+    public boolean processKitty(MainGame game){
+        List<Card> selectedKitty = new ArrayList<>();
+        List<Card> selectedHand = new ArrayList<>();
+
+        for(Card card : game.getKitty()){
+            if(card.isFocused()){
+                selectedKitty.add(card);
+                card.focus();
+            }
+        }
+        for(Card card : game.getBidWinner().getCards()){
+            if(card.isFocused()){
+                selectedHand.add(card);
+            }
+        }
+        if(selectedKitty.size() == selectedHand.size()){
+            game.getBidWinner().getCards().removeAll(selectedHand);
+            game.getBidWinner().getCards().addAll(selectedKitty);
+            game.getKitty().clear();
+            return true;
+        }
+        return false;
     }
     
     @Override

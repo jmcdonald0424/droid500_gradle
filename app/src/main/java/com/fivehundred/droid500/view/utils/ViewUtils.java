@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import com.fivehundred.droid500.R;
+import com.fivehundred.droid500.utils.GameConstants;
 import com.fivehundred.droid500.utils.Logger;
 
 public class ViewUtils {
@@ -61,9 +62,12 @@ public class ViewUtils {
             case 3:
                 return new PointF(ViewConstants.BASE_SCALE_MIN * ssu - ViewConstants.BASE_CARD_HEIGHT / 2 * ssu,
                                   ViewConstants.BASE_CARD_WIDTH / 2 * ssu + coordOffset);
-            case 4:
+            case GameConstants.KITTY_INDEX_CLOSED:
                 return new PointF(ViewConstants.BASE_SCALE_MIN / 2 * ssu,
                                   ViewConstants.BASE_SCALE_MIN / 2 * ssu);
+            case GameConstants.KITTY_INDEX_OPEN:
+                return new PointF(ViewConstants.BASE_SCALE_MIN / 2 * ssu - ViewConstants.BASE_CARD_WIDTH * (2.5f * ViewConstants.KITTY_OFFSET_SCALAR) * ssu + (coordOffset * ViewConstants.KITTY_OFFSET_SCALAR),
+                        ViewConstants.BASE_SCALE_MIN / 2 * ssu);
             default:
                 Logger.logError("getCoordinates failed -- No coordinates found for player: " + playerIndex);
                 return null;
@@ -72,9 +76,9 @@ public class ViewUtils {
     
     public static int getLayout(int layout){
         switch(layout){
-            case ViewListenerConstants.LOAD_GAME_LAYOUT:
+            case ViewListenerConstants.GAME_LAYOUT:
                 return R.id.gamelayout;
-            case ViewListenerConstants.LOAD_BID_LAYOUT:
+            case ViewListenerConstants.BID_LAYOUT:
                 return R.id.bidlayout;
             default:
                 Logger.logError("getLayout failed -- No layout found for " + layout);
@@ -84,9 +88,9 @@ public class ViewUtils {
     
     public static int getView(int layout){
         switch(layout){
-            case ViewListenerConstants.LOAD_GAME_LAYOUT:
+            case ViewListenerConstants.GAME_LAYOUT:
                 return R.layout.main;
-            case ViewListenerConstants.LOAD_BID_LAYOUT:
+            case ViewListenerConstants.BID_LAYOUT:
                 return R.layout.bid_portrait;
             default:
                 Logger.logError("getView failed -- No view layout found for " + layout);

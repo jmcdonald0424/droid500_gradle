@@ -5,7 +5,10 @@ import android.widget.RelativeLayout;
 import com.fivehundred.droid500.activity.MainActivity;
 import com.fivehundred.droid500.game.Card;
 import com.fivehundred.droid500.game.MainGame;
+import com.fivehundred.droid500.utils.GameConstants;
 import com.fivehundred.droid500.view.GLSurf;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -33,8 +36,19 @@ public class ViewController{
         glSurfaceView.getRenderer().createCardSprites(activity.getGame().getDeck());
     }
 
+    public void buildGameView(MainGame game){
+        glSurfaceView.getRenderer().buildCardSprites();
+    }
+
     public GLSurf buildBidView(MainGame game){
         glSurfaceView.getRenderer().buildCardSprites(game.getMyHand());
+        return glSurfaceView;
+    }
+
+    public GLSurf buildKittyView(MainGame game){
+        glSurfaceView.getRenderer().buildCardSprites(game.getBidWinner().getCards());
+        glSurfaceView.getRenderer().addCardSprites(game.getKitty());
+        glSurfaceView.getRenderer().showCards(game.getKitty(), GameConstants.KITTY_INDEX_OPEN);
         return glSurfaceView;
     }
 

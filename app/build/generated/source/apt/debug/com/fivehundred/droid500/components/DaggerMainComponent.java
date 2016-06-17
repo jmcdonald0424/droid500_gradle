@@ -68,7 +68,9 @@ public final class DaggerMainComponent implements MainComponent {
         MainActivity_MembersInjector.create(
             provideGameControllerProvider, provideViewControllerProvider);
 
-    this.mainGameMembersInjector = MainGame_MembersInjector.create(provideGameControllerProvider);
+    this.mainGameMembersInjector =
+        MainGame_MembersInjector.create(
+            provideGameControllerProvider, provideViewControllerProvider);
 
     this.provideAnimationControllerProvider =
         ScopedProvider.create(

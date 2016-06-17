@@ -15,6 +15,11 @@ public class ViewConstants{
     public static final float BASE_SCALE_WIDTH_LANDSCAPE = 320.0f;
     public static final float BASE_SCALE_HEIGHT_LANDSCAPE = 480.0f;
     public static final float BASE_SCALE_MIN = 320.0f;
+
+    public static final float KITTY_OFFSET_SCALAR = 2.5f;
+    public static final float FOCUS_SCALE = 0.25f;
+    public static final int FOCUS_MULTIPLIER = 1;
+    public static final int UNFOCUS_MULTIPLIER = -1;
     
     public static final int LEFT = -2;
     public static final int TOP = 2;

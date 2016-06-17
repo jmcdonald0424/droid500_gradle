@@ -38,9 +38,22 @@ public class GLSurf extends GLSurfaceView {
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent e) {
-        renderer.processTouchEvent(e);
-        return true;
+    public boolean onTouchEvent(final MotionEvent e) {
+        if(e != null){
+            if(e.getAction() == MotionEvent.ACTION_DOWN){
+                if(renderer != null){
+                    queueEvent(new Runnable() {
+                        @Override
+                        public void run() {
+                            renderer.processTouchEvent(e);
+                        }
+                    });
+                    requestRender();
+                    return true;
+                }
+            }
+        }
+        return false;
     }
     
     public void dealCards(MainGame game){

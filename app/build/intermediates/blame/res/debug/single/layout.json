@@ -1,5 +1,9 @@
 [
     {
+        "merged": "C:\\AndroidProjects\\droid500\\app\\build\\intermediates\\res\\merged\\debug\\layout\\kitty_portrait.xml",
+        "source": "C:\\AndroidProjects\\droid500\\app\\src\\main\\res\\layout\\kitty_portrait.xml"
+    },
+    {
         "merged": "C:\\AndroidProjects\\droid500\\app\\build\\intermediates\\res\\merged\\debug\\layout\\bid_buttons.xml",
         "source": "C:\\AndroidProjects\\droid500\\app\\src\\main\\res\\layout\\bid_buttons.xml"
     },

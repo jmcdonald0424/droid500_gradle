@@ -11,6 +11,7 @@ import com.fivehundred.droid500.game.controllers.GameController;
 import com.fivehundred.droid500.view.Sprite;
 import com.fivehundred.droid500.view.controllers.AnimationController;
 import com.fivehundred.droid500.view.controllers.ViewController;
+import com.fivehundred.droid500.view.utils.ViewListenerConstants;
 import com.fivehundred.droid500.view.utils.ViewUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,8 +49,8 @@ public class DealerAnimation{
     public void dealCards(){
         if(cardCount > 44){
             // Sort each hand to organize suits
-            gameController.sortCards(game, ssu);
-            gameController.startBids(game, (MainActivity)context);
+            sortCards(game, ssu);
+            ((MainActivity)context).startBids(game);
         }else{
             if(cardCount % 9 == 0){
                 playerIndex = 4;
@@ -99,6 +100,11 @@ public class DealerAnimation{
             set.start();
             cardCount++;
         }
+    }
+
+    private void sortCards(MainGame game, float ssu){
+        game.sortCards(ssu);
+        game.addListener(ViewListenerConstants.REBUILD_SPRITES);
     }
     
     /*private void placeCard(){

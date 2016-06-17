@@ -13,6 +13,7 @@ public class Card{
     private String suit;
     private Sprite sprite;
     private boolean faceUp = false;
+    private boolean focused = false;
     
     public Card(String suit, Integer power){
         this.suit = suit;
@@ -113,6 +114,20 @@ public class Card{
         }
     }
 
+    public boolean isSelected(float x, float y){
+        return sprite.isTouchCollision(x, y);
+    }
+
+    public void focus(){
+        if(!focused){
+            focused = true;
+            sprite.focus();
+        }else{
+            focused = false;
+            sprite.unfocus();
+        }
+    }
+
     public Integer getPower() {
         return power;
     }
@@ -144,4 +159,6 @@ public class Card{
     public void setFaceUp(boolean faceUp){
         this.faceUp = faceUp;
     }
+
+    public boolean isFocused(){return focused;}
 }

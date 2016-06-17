@@ -10,8 +10,8 @@ public interface GameController {
     public void startGame(MainGame game);
     public void startNewHand(MainGame game);
     public void sortCards(MainGame game, float ssu);
-    public void startBids(MainGame game, MainActivity mainActivity);
-    public void processKitty(MainGame game);
+    public void startBids(MainGame game);
+    public boolean processKitty(MainGame game);
     public void updateBidDisplay(String bidSuit, int bidPower, int bidIndex, MainActivity mainActivity);
     public void setPlayerBidPower(String bidPower, MainGame game);
     public void setPlayerBidSuit(String bidSuit, MainGame game);

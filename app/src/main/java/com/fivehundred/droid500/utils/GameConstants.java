@@ -52,4 +52,7 @@ public final class GameConstants{
     public static final int DIAMONDS_BASE_VALUE = 80;
     public static final int HEARTS_BASE_VALUE = 100;
     public static final int NO_TRUMP_BASE_VALUE = 120;
+
+    public static final int KITTY_INDEX_CLOSED = 4;
+    public static final int KITTY_INDEX_OPEN = 5;
 }

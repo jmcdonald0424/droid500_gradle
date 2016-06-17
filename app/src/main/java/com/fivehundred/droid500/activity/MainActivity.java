@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
@@ -50,6 +51,8 @@ public class MainActivity extends Activity {
     private GridView bidButtons;
     private RelativeLayout bidHand;
     private GLSurf bidHandView;
+    private View kittyView;
+    private TextView winningBid;
     
     private int playerCount = 4;
 
@@ -100,8 +103,21 @@ public class MainActivity extends Activity {
         }
         gameController.startGame(game);
         loadGameGraphics();
-        viewController.animateDealCards(game);
-        //TODO: relocate gameController.startBids from DealerAnimation to here (must solve UI thread conflict: http://stackoverflow.com/questions/5321344/android-animation-wait-until-finished)
+        dealCards();
+    }
+
+    private void dealCards(){
+        runOnUiThread(new Runnable(){
+            @Override
+            public void run(){
+                viewController.animateDealCards(game);
+            }
+        });
+    }
+
+    public void startBids(MainGame game){
+        loadLayout(ViewListenerConstants.BID_LAYOUT);
+        gameController.startBids(game);
     }
     
     public void confirmBid(View confirmBidButton){
@@ -110,6 +126,14 @@ public class MainActivity extends Activity {
     
     public void passBid(View passBidButton){
         gameController.passBid(game);
+    }
+
+    public void confirmKitty(View confirmKittyButton){
+        boolean kittyProcessed = gameController.processKitty(game);
+        if(kittyProcessed){
+            //Start game
+            loadLayout(ViewListenerConstants.GAME_LAYOUT);
+        }
     }
     
     public void setBidPower(View bidPowerButton){
@@ -140,6 +164,10 @@ public class MainActivity extends Activity {
         }
         gameController.setPlayerBidSuit(bidSuit, game);
     }
+
+    public void processKitty(MainGame game){
+        loadLayout(ViewListenerConstants.KITTY_LAYOUT);
+    }
     
     private void loadGameGraphics(){
         // Retrieve our Relative layout from our main layout we just set to our view.
@@ -156,13 +184,26 @@ public class MainActivity extends Activity {
     
     public void loadLayout(int layout){
         switch(layout){
-            case ViewListenerConstants.LOAD_BID_LAYOUT:
+            case ViewListenerConstants.GAME_LAYOUT:
+                loadGameLayout();
+                break;
+            case ViewListenerConstants.BID_LAYOUT:
                 loadBidLayout();
+                break;
+            case ViewListenerConstants.KITTY_LAYOUT:
+                loadKittyLayout();
                 break;
             default:
                 Logger.logError("loadLayout failed -- cannot find layout: " + layout);
                 
         }
+    }
+
+    private void loadGameLayout(){
+        gameLayout = (RelativeLayout) findViewById(R.id.gamelayout);
+        clearMainView();
+        buildGameView();
+        updateMainView();
     }
 
     private void loadBidLayout(){
@@ -179,6 +220,17 @@ public class MainActivity extends Activity {
         updateMainView(bidLayout);
     }
 
+    private void loadKittyLayout(){
+        LayoutInflater inflater = getLayoutInflater();
+        gameLayout = (RelativeLayout) findViewById(R.id.gamelayout);
+        kittyView = inflater.inflate(R.layout.kitty_portrait, null);
+        bidHand = (RelativeLayout)kittyView.findViewById(R.id.kittyview);
+        winningBid = (TextView)kittyView.findViewById(R.id.winningbid);
+        clearMainView();
+        buildKittyView();
+        updateMainView(kittyView);
+    }
+
     private void updateMainView(){
         updateMainView(viewController.getGlSurfaceView());
     }
@@ -187,7 +239,14 @@ public class MainActivity extends Activity {
         runOnUiThread(new Runnable(){
             @Override
             public void run(){
-                gameLayout.addView(view);
+                if(view != null){
+                    // Check if the view has already been assigned to a parent. If so, remove it
+                    ViewGroup parentViewGroup = (ViewGroup)view.getParent();
+                    if(parentViewGroup != null){
+                        parentViewGroup.removeAllViews();
+                    }
+                    gameLayout.addView(view);
+                }
             }
         });
     }
@@ -250,6 +309,15 @@ public class MainActivity extends Activity {
     private void buildMainView(){
         viewController.buildMainView(this);
     }
+
+    private void buildGameView(){
+        runOnUiThread(new Runnable(){
+            @Override
+            public void run(){
+                viewController.buildGameView(game);
+            }
+        });
+    }
     
     private void buildBidView(){
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, ViewConstants.SCORE_GRID);
@@ -261,6 +329,25 @@ public class MainActivity extends Activity {
         //bidHandView = new GLSurf(this);
         //bidHandView.getRenderer().buildCardSprites(game.getMyHand());
         bidHand.addView(viewController.buildBidView(game));
+    }
+
+    private void buildKittyView(){
+        runOnUiThread(new Runnable(){
+            @Override
+            public void run(){
+                GLSurf kittyView = viewController.buildKittyView(game);
+                if(kittyView != null){
+                    // Check if the view has already been assigned to a parent. If so, remove it
+                    ViewGroup parentViewGroup = (ViewGroup)kittyView.getParent();
+                    if(parentViewGroup != null){
+                        parentViewGroup.removeAllViews();
+                    }
+                    bidHand.addView(kittyView);
+                }
+                winningBid.setText(game.getWinningBid().keyAt(0) + game.getWinningBid().valueAt(0));
+            }
+        });
+        //viewController.buildKittyView(game);
     }
     
     public void updateBidDisplay(String bidSuit, int bidPower, int bidIndex){
