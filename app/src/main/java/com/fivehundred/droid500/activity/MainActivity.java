@@ -132,6 +132,7 @@ public class MainActivity extends Activity {
         boolean kittyProcessed = gameController.processKitty(game);
         if(kittyProcessed){
             //Start game
+            game.setPhase(GameConstants.PLAY_PHASE);
             loadLayout(ViewListenerConstants.GAME_LAYOUT);
         }
     }

@@ -122,7 +122,11 @@ public class Card{
         if(!focused){
             focused = true;
             sprite.focus();
-        }else{
+        }
+    }
+
+    public void unfocus(){
+        if(focused){
             focused = false;
             sprite.unfocus();
         }

@@ -31,6 +31,7 @@ public class MainGame {
     private int handScore[] = new int[2];
     private int gameScore[] = new int[2];
     private List<Integer> listeners = new ArrayList<>();
+    private int phase = 0;
     
     private Auction auction;
     private int bidTeam = 0;
@@ -47,6 +48,7 @@ public class MainGame {
     }
     
     private void init(int playerCount){
+        phase = GameConstants.BID_PHASE;
         buildPlayers(playerCount);
         createDeck();
     }
@@ -136,6 +138,7 @@ public class MainGame {
         bid.put(playerBidPower, playerBidSuit);
         auction.bid(0, bid);
         auction.rollBids();
+        phase = GameConstants.KITTY_PHASE;
         ((MainActivity)context).processKitty(this);
     }
     
@@ -238,6 +241,7 @@ public class MainGame {
         Logger.lineBreak();
         Logger.log("Series complete");
         Logger.lineBreak(2);
+        phase = GameConstants.SCORING_PHASE;
         int bidValue = GameUtils.getBidValue(winningBid);
         if(handScore[bidTeam] < winningBid.keyAt(0)){
             gameScore[bidTeam] -= bidValue;
@@ -271,6 +275,7 @@ public class MainGame {
                 endGame(1);
             }
         }else{
+            phase = GameConstants.BID_PHASE;
             gameController.startNewHand(this);
         }
     }
@@ -367,5 +372,13 @@ public class MainGame {
 
     public SparseArray<String> getWinningBid(){
         return this.winningBid;
+    }
+
+    public int getPhase() {
+        return phase;
+    }
+
+    public void setPhase(int phase) {
+        this.phase = phase;
     }
 }

@@ -55,4 +55,9 @@ public final class GameConstants{
 
     public static final int KITTY_INDEX_CLOSED = 4;
     public static final int KITTY_INDEX_OPEN = 5;
+
+    public static final int BID_PHASE = 1;
+    public static final int KITTY_PHASE = 2;
+    public static final int PLAY_PHASE = 3;
+    public static final int SCORING_PHASE = 4;
 }

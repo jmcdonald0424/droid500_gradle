@@ -68,12 +68,13 @@ public class GameControllerImpl implements GameController {
         for(Card card : game.getKitty()){
             if(card.isFocused()){
                 selectedKitty.add(card);
-                card.focus();
+                card.unfocus();
             }
         }
         for(Card card : game.getBidWinner().getCards()){
             if(card.isFocused()){
                 selectedHand.add(card);
+                card.unfocus();
             }
         }
         if(selectedKitty.size() == selectedHand.size()){

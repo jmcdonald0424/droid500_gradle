@@ -14,6 +14,7 @@ import com.fivehundred.droid500.application.MainApplication;
 import com.fivehundred.droid500.game.Card;
 import com.fivehundred.droid500.game.MainGame;
 import com.fivehundred.droid500.game.Player;
+import com.fivehundred.droid500.utils.GameConstants;
 import com.fivehundred.droid500.utils.Logger;
 import com.fivehundred.droid500.view.animations.DealerAnimation;
 import com.fivehundred.droid500.view.controllers.AnimationController;
@@ -337,13 +338,53 @@ public class GLRenderer implements Renderer {
             //Invert Y coordinates for OpenGL system
             touchY = Math.abs(ViewConstants.BASE_SCALE_MIN * ssu - touchY);
 
-            List<Card> activeCards = getGame().getActiveCards();
-            Collections.reverse(activeCards); // Reverse so touch coordinates apply to top-most card which are drawn last
+            focusCard(touchX, touchY);
+        }
+    }
 
+    private void focusCard(float x, float y){
+        switch(getGame().getPhase()){
+            case GameConstants.KITTY_PHASE:
+                focusMultipleCards(x,y);
+                break;
+            case GameConstants.PLAY_PHASE:
+                focusSingleCard(x,y);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void focusMultipleCards(float x, float y){
+        List<Card> activeCards = new ArrayList<>(getGame().getActiveCards());
+        Collections.reverse(activeCards); // Reverse so touch coordinates apply to top-most card which are drawn last
+
+        for(Card card : activeCards){
+            if(card.isSelected(x, y)){
+                card.focus();
+                return;
+            }
+        }
+    }
+
+    private void focusSingleCard(float x, float y){
+        Card selectedCard = null;
+        List<Card> activeCards = new ArrayList<>(getGame().getActiveCards());
+        Collections.reverse(activeCards); // Reverse so touch coordinates apply to top-most card which are drawn last
+
+        for(Card card : activeCards){
+            if(card.isSelected(x, y)){
+                selectedCard = card;
+                break;
+            }
+        }
+
+        if(selectedCard != null){
             for(Card card : activeCards){
-                if(card.isSelected(touchX, touchY)){
+                if(card.equals(selectedCard)){
                     card.focus();
-                    return;
+                }else{
+                    card.unfocus();
                 }
             }
         }
