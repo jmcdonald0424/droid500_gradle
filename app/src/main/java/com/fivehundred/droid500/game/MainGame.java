@@ -32,6 +32,7 @@ public class MainGame {
     private int gameScore[] = new int[2];
     private List<Integer> listeners = new ArrayList<>();
     private int phase = 0;
+    private final boolean computerPlayerIdentificationArray[];
     
     private Auction auction;
     private int bidTeam = 0;
@@ -42,8 +43,9 @@ public class MainGame {
     @Inject GameController gameController;
     @Inject ViewController viewController;
     
-    public MainGame(int playerCount, Context context){
+    public MainGame(int playerCount, Context context, boolean[] computerPlayerIdentificationArray){
         this.context = context;
+        this.computerPlayerIdentificationArray = computerPlayerIdentificationArray;
         init(playerCount);
     }
     
@@ -55,7 +57,8 @@ public class MainGame {
     
     private void buildPlayers(int playerCount){
         for(int playerIndex=0; playerIndex<playerCount; playerIndex++){
-            players.add(new Player(playerIndex));
+            boolean computerPlayer = computerPlayerIdentificationArray[playerIndex];
+            players.add(new Player(playerIndex, computerPlayer));
         }
     }
     
@@ -139,6 +142,7 @@ public class MainGame {
         auction.bid(0, bid);
         auction.rollBids();
         phase = GameConstants.KITTY_PHASE;
+        updateTrumpCards();
         ((MainActivity)context).processKitty(this);
     }
     
@@ -154,10 +158,12 @@ public class MainGame {
         return players.get(bidWinnerIndex);
     }
     
-    public void openKitty(int winnerIndex){
-        Player winner = players.get(winnerIndex);
-        winner.getCards().addAll(kitty);
-        winner.reduceHand();
+    public void openKitty(){
+        Player winner = getBidWinner();
+        if(winner.isComputerPlayer()){
+            winner.getCards().addAll(kitty);
+            winner.reduceHand();
+        }
     }
     
     public void updateTrumpCards(){
@@ -217,8 +223,18 @@ public class MainGame {
     public void progressGame(){
         if(!players.get(currentPlayerIndex).getCards().isEmpty()){
             if(!currentHand.isLocked()){
-                currentPlayerIndex = players.get(currentPlayerIndex).play(currentHand);
-                progressGame();
+                Player currentPlayer = players.get(currentPlayerIndex);
+                Card playCard = null;
+                if(!currentPlayer.isComputerPlayer()){
+                    playCard = currentPlayer.getFocusedCard();
+                    //If a card isn't focused, then wait for current player to provide a card to play
+                    if(playCard == null){
+                        return;
+                    }
+                }
+                viewController.animatePlayCard(playCard);
+                currentPlayerIndex = players.get(currentPlayerIndex).play(currentHand, playCard);
+                //progressGame();  //moved this call
             }else{
                 scoreHand();
                 if(hands.size() < 10){
@@ -300,6 +316,10 @@ public class MainGame {
         activeCards.addAll(kitty);
         activeCards.addAll(players.get(currentPlayerIndex).getCards());
         return activeCards;
+    }
+
+    public Player getCurrentPlayer(){
+        return players.get(currentPlayerIndex);
     }
     
     public List<Card> getMyHand(){

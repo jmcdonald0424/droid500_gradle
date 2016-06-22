@@ -8,7 +8,7 @@ import com.fivehundred.droid500.game.MainGame;
 import com.fivehundred.droid500.game.controllers.GameController;
 import com.fivehundred.droid500.game.controllers.GameControllerImpl;
 import com.fivehundred.droid500.view.GLRenderer;
-import com.fivehundred.droid500.view.animations.DealerAnimation;
+import com.fivehundred.droid500.view.animations.CardAnimation;
 import com.fivehundred.droid500.view.controllers.AnimationController;
 import com.fivehundred.droid500.view.controllers.ViewController;
 

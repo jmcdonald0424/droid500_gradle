@@ -1,6 +1,9 @@
 package com.fivehundred.droid500.game;
 
 import com.fivehundred.droid500.utils.Logger;
+import com.fivehundred.droid500.view.animations.CardAnimation;
+
+import javax.inject.Inject;
 
 public class Hand{
     

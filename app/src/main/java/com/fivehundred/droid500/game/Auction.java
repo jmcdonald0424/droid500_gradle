@@ -41,7 +41,7 @@ public class Auction{
         for(int count = startingBidIndex; count < players.size(); count++){
             int playerIndex = ((dealerIndex + 1 + count) % (players.size()));
             nextBidder = players.get(playerIndex);
-            if(nextBidder.isComputer()){
+            if(nextBidder.isComputerPlayer()){
                 bid(playerIndex, nextBidder.bid());                
             }else{
                 Logger.log("Waiting on user");

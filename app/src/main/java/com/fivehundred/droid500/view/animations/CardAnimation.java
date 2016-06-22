@@ -6,8 +6,10 @@ import android.animation.AnimatorSet;
 import android.content.Context;
 import android.graphics.PointF;
 import com.fivehundred.droid500.activity.MainActivity;
+import com.fivehundred.droid500.game.Card;
 import com.fivehundred.droid500.game.MainGame;
 import com.fivehundred.droid500.game.controllers.GameController;
+import com.fivehundred.droid500.utils.GameConstants;
 import com.fivehundred.droid500.view.Sprite;
 import com.fivehundred.droid500.view.controllers.AnimationController;
 import com.fivehundred.droid500.view.controllers.ViewController;
@@ -18,7 +20,7 @@ import java.util.List;
 import java.util.Random;
 import javax.inject.Inject;
 
-public class DealerAnimation{
+public class CardAnimation{
     
     private final MainGame game;
     private final float ssu;
@@ -37,8 +39,8 @@ public class DealerAnimation{
     @Inject AnimationController animation;
     @Inject ViewController viewController;
     @Inject GameController gameController;
-    
-    public DealerAnimation(MainGame game, float ssu, Context context){
+
+    public CardAnimation(MainGame game, float ssu, Context context){
         this.game = game;
         this.ssu = ssu;
         cardCount = 0;
@@ -100,6 +102,32 @@ public class DealerAnimation{
             set.start();
             cardCount++;
         }
+    }
+
+    public void playCard(Card card){
+        PointF dropPoint = ViewUtils.getDropPoint(GameConstants.TABLE_CENTER_INDEX);
+        PointF endTranslation = new PointF((dropPoint.x - new Random().nextInt(dropPointArea)) * ssu, (dropPoint.y - new Random().nextInt(dropPointArea)) * ssu);
+        float angle = 990 - (new Random()).nextInt(180);
+
+        List<Animator> cardAnimations = new ArrayList<>();
+        cardAnimations.add(animation.translate(card.getSprite(), endTranslation));
+        cardAnimations.add(animation.rotate(card.getSprite(), angle));
+        cardAnimations.add(animation.scale(card.getSprite(), 1.35f, 1.00f));
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.setDuration(100);
+        animatorSet.playTogether(cardAnimations);
+        animatorSet.addListener(new AnimatorListenerAdapter(){
+            @Override
+            public void onAnimationStart(Animator animation){
+
+            }
+            @Override
+            public void onAnimationEnd(Animator animation){
+                //((MainActivity)context).progressGame();
+            }
+        });
+        animatorSet.start();
     }
 
     private void sortCards(MainGame game, float ssu){

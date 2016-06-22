@@ -15,8 +15,8 @@ import com.fivehundred.droid500.modules.MainModule_ProvideGameControllerFactory;
 import com.fivehundred.droid500.modules.MainModule_ProvideViewControllerFactory;
 import com.fivehundred.droid500.view.GLRenderer;
 import com.fivehundred.droid500.view.GLRenderer_MembersInjector;
-import com.fivehundred.droid500.view.animations.DealerAnimation;
-import com.fivehundred.droid500.view.animations.DealerAnimation_MembersInjector;
+import com.fivehundred.droid500.view.animations.CardAnimation;
+import com.fivehundred.droid500.view.animations.CardAnimation_MembersInjector;
 import com.fivehundred.droid500.view.controllers.AnimationController;
 import com.fivehundred.droid500.view.controllers.ViewController;
 import dagger.MembersInjector;
@@ -42,7 +42,7 @@ public final class DaggerMainComponent implements MainComponent {
 
   private MembersInjector<GLRenderer> gLRendererMembersInjector;
 
-  private MembersInjector<DealerAnimation> dealerAnimationMembersInjector;
+  private MembersInjector<CardAnimation> cardAnimationMembersInjector;
 
   private MembersInjector<Auction> auctionMembersInjector;
 
@@ -79,8 +79,8 @@ public final class DaggerMainComponent implements MainComponent {
     this.gLRendererMembersInjector =
         GLRenderer_MembersInjector.create(provideAnimationControllerProvider);
 
-    this.dealerAnimationMembersInjector =
-        DealerAnimation_MembersInjector.create(
+    this.cardAnimationMembersInjector =
+        CardAnimation_MembersInjector.create(
             provideAnimationControllerProvider,
             provideViewControllerProvider,
             provideGameControllerProvider);
@@ -104,8 +104,8 @@ public final class DaggerMainComponent implements MainComponent {
   }
 
   @Override
-  public void inject(DealerAnimation dealerAnimation) {
-    dealerAnimationMembersInjector.injectMembers(dealerAnimation);
+  public void inject(CardAnimation cardAnimation) {
+    cardAnimationMembersInjector.injectMembers(cardAnimation);
   }
 
   @Override

@@ -55,6 +55,8 @@ public class MainActivity extends Activity {
     private TextView winningBid;
     
     private int playerCount = 4;
+    //TODO: cannot be hardcoded when multiplayer is optional
+    private final boolean computerPlayerIdentificationArray[] =  {false, true, true, true};
 
     // Controllers
     @Inject GameController gameController;
@@ -132,8 +134,10 @@ public class MainActivity extends Activity {
         boolean kittyProcessed = gameController.processKitty(game);
         if(kittyProcessed){
             //Start game
+            game.updateTrumpCards();
             game.setPhase(GameConstants.PLAY_PHASE);
             loadLayout(ViewListenerConstants.GAME_LAYOUT);
+            game.startHand();
         }
     }
     
@@ -167,7 +171,13 @@ public class MainActivity extends Activity {
     }
 
     public void processKitty(MainGame game){
+        game.openKitty();
         loadLayout(ViewListenerConstants.KITTY_LAYOUT);
+        //TODO: provide animations and view change if computer wins kitty
+    }
+
+    public void progressGame(){
+        game.progressGame();
     }
     
     private void loadGameGraphics(){
@@ -285,7 +295,7 @@ public class MainActivity extends Activity {
         if (fragment == null) {
             fragment = new MainFragment();
             manager.beginTransaction().add(fragment, "game").commit();
-            game = new MainGame(playerCount, this);//gameController.createNewGame(playerCount, this);
+            game = new MainGame(playerCount, this, computerPlayerIdentificationArray);//gameController.createNewGame(playerCount, this);
             fragment.setGame(game);
             // Inject into object graph
             MainApplication app = (MainApplication)getApplication();

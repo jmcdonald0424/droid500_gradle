@@ -12,11 +12,13 @@ public class Player {
 
     private List<Card> cards = new ArrayList<>();
     private final int playerIndex;
+    private final boolean computerPlayer;
     
     private Bidder bidder;
     
-    public Player(int playerIndex){
+    public Player(int playerIndex, boolean computerPlayer){
         this.playerIndex = playerIndex;
+        this.computerPlayer = computerPlayer;
     }
     
     public SparseArray<String> bid(){
@@ -42,8 +44,10 @@ public class Player {
         return false;
     }
     
-    public int play(Hand hand){
-        Card playCard = ActionUtils.playHand(hand, this);
+    public int play(Hand hand, Card playCard){
+        if(playCard == null){
+            playCard = ActionUtils.playHand(hand, this);
+        }
         Logger.log("Player " + playerIndex + " plays " + playCard.toString());
         return hand.play(playCard, playerIndex);
     }
@@ -133,6 +137,15 @@ public class Player {
         Logger.log("Throw off failed: Player " + playerIndex + " has no " + suit);
         return card;
     }
+
+    public Card getFocusedCard(){
+        for(Card card : cards){
+            if(card.isFocused()){
+                return card;
+            }
+        }
+        return null;
+    }
     
     private void remove(Card card){
         cards.remove(card);
@@ -166,7 +179,7 @@ public class Player {
         this.bidder = bidder;
     }
     
-    public boolean isComputer(){
-        return playerIndex != 0; // TODO: This will need to change when multiple players are added
+    public boolean isComputerPlayer(){
+        return computerPlayer;
     }
 }

@@ -97,4 +97,13 @@ public class ViewUtils {
                 return -1;
         }
     }
+
+    public static boolean isCenter(float x, float y, float ssu){
+        PointF center = new PointF(ViewConstants.BASE_SCALE_MIN / 2 * ssu, ViewConstants.BASE_SCALE_MIN / 2 * ssu);
+        RectF middleOfTable = new RectF(center.x + (center.x * -1 * ViewConstants.TABLE_CENTER_SCALAR),
+                                        center.y + (center.y * -1 * ViewConstants.TABLE_CENTER_SCALAR),
+                                        center.x + (center.x * ViewConstants.TABLE_CENTER_SCALAR),
+                                        center.y + (center.y * ViewConstants.TABLE_CENTER_SCALAR));
+        return middleOfTable.contains(x, y);
+    }
 }

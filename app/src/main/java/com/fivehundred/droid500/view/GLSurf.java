@@ -3,6 +3,8 @@ package com.fivehundred.droid500.view;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.view.MotionEvent;
+
+import com.fivehundred.droid500.game.Card;
 import com.fivehundred.droid500.game.MainGame;
 
 public class GLSurf extends GLSurfaceView {
@@ -58,6 +60,10 @@ public class GLSurf extends GLSurfaceView {
     
     public void dealCards(MainGame game){
         renderer.dealCards(game);
+    }
+
+    public void playCard(Card card){
+        renderer.playCard(card);
     }
 
     public GLRenderer getRenderer() {

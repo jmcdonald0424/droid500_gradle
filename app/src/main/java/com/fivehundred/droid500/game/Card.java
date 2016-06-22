@@ -132,6 +132,16 @@ public class Card{
         }
     }
 
+    public void toggleFocus(){
+        if(!focused){
+            focused = true;
+            sprite.focus();
+        }else{
+            focused = false;
+            sprite.unfocus();
+        }
+    }
+
     public Integer getPower() {
         return power;
     }

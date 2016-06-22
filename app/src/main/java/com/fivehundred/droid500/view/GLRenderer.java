@@ -16,7 +16,7 @@ import com.fivehundred.droid500.game.MainGame;
 import com.fivehundred.droid500.game.Player;
 import com.fivehundred.droid500.utils.GameConstants;
 import com.fivehundred.droid500.utils.Logger;
-import com.fivehundred.droid500.view.animations.DealerAnimation;
+import com.fivehundred.droid500.view.animations.CardAnimation;
 import com.fivehundred.droid500.view.controllers.AnimationController;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -62,7 +62,10 @@ public class GLRenderer implements Renderer {
     private Context context;
     private long lastTime;
     private List<Sprite> sprites = new ArrayList<>();
-    
+
+    // Animation
+    private CardAnimation cardAnimation;
+
     @Inject AnimationController animation;
 
     public GLRenderer(Context c) {
@@ -338,20 +341,32 @@ public class GLRenderer implements Renderer {
             //Invert Y coordinates for OpenGL system
             touchY = Math.abs(ViewConstants.BASE_SCALE_MIN * ssu - touchY);
 
-            focusCard(touchX, touchY);
+            handleTouchEvent(touchX, touchY);
         }
     }
 
-    private void focusCard(float x, float y){
+    private void handleTouchEvent(float x, float y){
         switch(getGame().getPhase()){
             case GameConstants.KITTY_PHASE:
                 focusMultipleCards(x,y);
                 break;
             case GameConstants.PLAY_PHASE:
-                focusSingleCard(x,y);
+                handlePlayPhaseTouchEvent(x,y);
                 break;
             default:
                 break;
+        }
+    }
+
+    private void handlePlayPhaseTouchEvent(float x, float y){
+        if(getGame().getCurrentPlayer().getFocusedCard() != null){
+            if(touchedCenter(x,y)){
+                getGame().progressGame();
+            }else{
+                focusSingleCard(x,y);
+            }
+        }else{
+            focusSingleCard(x,y);
         }
     }
 
@@ -361,7 +376,7 @@ public class GLRenderer implements Renderer {
 
         for(Card card : activeCards){
             if(card.isSelected(x, y)){
-                card.focus();
+                card.toggleFocus();
                 return;
             }
         }
@@ -389,6 +404,10 @@ public class GLRenderer implements Renderer {
             }
         }
     }
+
+    private boolean touchedCenter(float x, float y){
+        return ViewUtils.isCenter(x, y, ssu);
+    }
     
     public void dealCards(MainGame game){
         List<Sprite> cardSprites = new ArrayList<>();
@@ -396,9 +415,16 @@ public class GLRenderer implements Renderer {
             cardSprites.add(card.getSprite());
         }
         addSprites(cardSprites);
-        DealerAnimation dealerAnimation = new DealerAnimation(game, ssu, context);
-        injectIntoObjectGraph(dealerAnimation);
-        dealerAnimation.dealCards();
+        cardAnimation = new CardAnimation(game, ssu, context);
+        injectIntoObjectGraph(cardAnimation);
+        cardAnimation.dealCards();
+    }
+
+    public void playCard(Card card){
+        if(cardAnimation == null){
+            cardAnimation = new CardAnimation(getGame(), ssu, context);
+        }
+        cardAnimation.playCard(card);
     }
     
     /*public void sortCards(){
@@ -501,11 +527,6 @@ public class GLRenderer implements Renderer {
         addSprite(card.getSprite());
     }
     
-    private void injectIntoObjectGraph(DealerAnimation object){
-        MainApplication app = (MainApplication)((MainActivity)context).getApplication();
-        app.getMainComponent().inject(object);
-    }
-    
     private void handleListeners(List<Integer> listeners){
         for(int listener : listeners){
             switch(listener){
@@ -521,5 +542,18 @@ public class GLRenderer implements Renderer {
     
     private MainGame getGame(){
         return ((MainActivity)context).getGame();
+    }
+
+    public CardAnimation getCardAnimation() {
+        return cardAnimation;
+    }
+
+    public void setCardAnimation(CardAnimation cardAnimation) {
+        this.cardAnimation = cardAnimation;
+    }
+
+    private void injectIntoObjectGraph(CardAnimation object){
+        MainApplication app = (MainApplication)((MainActivity)context).getApplication();
+        app.getMainComponent().inject(object);
     }
 }

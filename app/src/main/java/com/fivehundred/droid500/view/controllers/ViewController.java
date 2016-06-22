@@ -56,6 +56,10 @@ public class ViewController{
         glSurfaceView.dealCards(game);
     }
 
+    public void animatePlayCard(Card card){
+        glSurfaceView.playCard(card);
+    }
+
     public void flip(Card card){
         card.flip();
     }

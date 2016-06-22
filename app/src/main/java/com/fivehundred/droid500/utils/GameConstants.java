@@ -53,6 +53,11 @@ public final class GameConstants{
     public static final int HEARTS_BASE_VALUE = 100;
     public static final int NO_TRUMP_BASE_VALUE = 120;
 
+    public static final int PLAYER_1 = 0;
+    public static final int PLAYER_2 = 1;
+    public static final int PLAYER_3 = 2;
+    public static final int PLAYER_4 = 3;
+    public static final int TABLE_CENTER_INDEX = 4;
     public static final int KITTY_INDEX_CLOSED = 4;
     public static final int KITTY_INDEX_OPEN = 5;
 
