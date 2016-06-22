@@ -45,10 +45,8 @@ public class Player {
     }
     
     public int play(Hand hand, Card playCard){
-        if(playCard == null){
-            playCard = ActionUtils.playHand(hand, this);
-        }
         Logger.log("Player " + playerIndex + " plays " + playCard.toString());
+        cards.remove(playCard);
         return hand.play(playCard, playerIndex);
     }
     

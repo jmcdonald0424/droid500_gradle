@@ -104,7 +104,7 @@ public class CardAnimation{
         }
     }
 
-    public void playCard(Card card){
+    public void playCard(final Card card){
         PointF dropPoint = ViewUtils.getDropPoint(GameConstants.TABLE_CENTER_INDEX);
         PointF endTranslation = new PointF((dropPoint.x - new Random().nextInt(dropPointArea)) * ssu, (dropPoint.y - new Random().nextInt(dropPointArea)) * ssu);
         float angle = 990 - (new Random()).nextInt(180);
@@ -124,7 +124,9 @@ public class CardAnimation{
             }
             @Override
             public void onAnimationEnd(Animator animation){
-                //((MainActivity)context).progressGame();
+                card.show();
+                clearHand();
+                ((MainActivity)context).progressGame();
             }
         });
         animatorSet.start();
@@ -178,5 +180,12 @@ public class CardAnimation{
                 Logger.logError("getCoordinates failed -- No coordinates found for player: " + playerIndex);
                 return null;
         }*/
+    }
+
+    private void clearHand(){
+        if(game.getCurrentHand().isComplete()){
+            viewController.clearHand();
+            game.getCurrentHand().getHandCards().clear();
+        }
     }
 }

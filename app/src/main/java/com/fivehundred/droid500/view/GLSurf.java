@@ -7,6 +7,8 @@ import android.view.MotionEvent;
 import com.fivehundred.droid500.game.Card;
 import com.fivehundred.droid500.game.MainGame;
 
+import java.util.List;
+
 public class GLSurf extends GLSurfaceView {
 
     private final GLRenderer renderer;
@@ -64,6 +66,11 @@ public class GLSurf extends GLSurfaceView {
 
     public void playCard(Card card){
         renderer.playCard(card);
+    }
+
+    public void clearHand(){
+        renderer.buildCardSprites();
+        requestRender();
     }
 
     public GLRenderer getRenderer() {

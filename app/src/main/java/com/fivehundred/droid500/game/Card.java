@@ -114,6 +114,12 @@ public class Card{
         }
     }
 
+    public void show(){
+        if(!isFaceUp()){
+            flip();
+        }
+    }
+
     public boolean isSelected(float x, float y){
         return sprite.isTouchCollision(x, y);
     }

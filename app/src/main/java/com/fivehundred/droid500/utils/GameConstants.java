@@ -4,6 +4,7 @@ public final class GameConstants{
     
     // Game Related Values :: These will most likely be dynamic user options at some point
     public static final int LOWEST_POWER = 4; // 4 is lowest card in play
+    public static final int NUMBER_OF_PLAYERS = 4;
     
     // Constant Values :: These will remain constants
     

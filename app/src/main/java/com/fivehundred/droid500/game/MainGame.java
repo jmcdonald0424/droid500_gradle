@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.PointF;
 import android.util.SparseArray;
 import com.fivehundred.droid500.activity.MainActivity;
+import com.fivehundred.droid500.ai.ActionUtils;
 import com.fivehundred.droid500.game.controllers.GameController;
 import com.fivehundred.droid500.utils.ConversionUtils;
 import com.fivehundred.droid500.utils.GameConstants;
@@ -231,9 +232,11 @@ public class MainGame {
                     if(playCard == null){
                         return;
                     }
+                }else{
+                    playCard = ActionUtils.playHand(currentHand, currentPlayer);
                 }
+                currentPlayerIndex = currentPlayer.play(currentHand, playCard);
                 viewController.animatePlayCard(playCard);
-                currentPlayerIndex = players.get(currentPlayerIndex).play(currentHand, playCard);
                 //progressGame();  //moved this call
             }else{
                 scoreHand();
@@ -400,5 +403,9 @@ public class MainGame {
 
     public void setPhase(int phase) {
         this.phase = phase;
+    }
+
+    public Hand getCurrentHand(){
+        return currentHand;
     }
 }

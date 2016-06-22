@@ -64,6 +64,10 @@ public class ViewController{
         card.flip();
     }
 
+    public void clearHand(){
+        glSurfaceView.clearHand();
+    }
+
     public void setLayoutParams(RelativeLayout.LayoutParams glParams){
         glSurfaceView.setLayoutParams(glParams);
     }

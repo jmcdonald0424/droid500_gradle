@@ -1,7 +1,12 @@
 package com.fivehundred.droid500.game;
 
+import com.fivehundred.droid500.utils.GameConstants;
 import com.fivehundred.droid500.utils.Logger;
 import com.fivehundred.droid500.view.animations.CardAnimation;
+import com.fivehundred.droid500.view.controllers.ViewController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -13,6 +18,7 @@ public class Hand{
     private int winnerIndex = 0;
     private Integer highPower = 0;
     private boolean locked = false;
+    private List<Card> handCards = new ArrayList<>();
         
     public Hand(String trumpSuit){
         this.trumpSuit = trumpSuit;
@@ -21,6 +27,8 @@ public class Hand{
     public int play(Card card, int playerIndex){
         setLeadSuit(card);
         score(card, playerIndex);
+        handCards.add(card);
+        card.unfocus();
         if(handComplete()){
             lockHand();
             return(winnerIndex);
@@ -51,12 +59,16 @@ public class Hand{
     }
     
     private boolean handComplete(){
-        for(int score : handScore){
+        if(handCards.size() < GameConstants.NUMBER_OF_PLAYERS){
+            return false;
+        }
+        return true;
+        /*for(int score : handScore){
             if(score == 0){
                 return false;
             }
         }
-        return true;
+        return true;*/
     }
     
     private void lockHand(){
@@ -90,5 +102,13 @@ public class Hand{
 
     public void setLocked(boolean locked) {
         this.locked = locked;
+    }
+
+    public boolean isComplete(){
+        return handComplete();
+    }
+
+    public List<Card> getHandCards() {
+        return handCards;
     }
 }

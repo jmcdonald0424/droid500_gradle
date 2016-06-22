@@ -1,5 +1,6 @@
 package com.fivehundred.droid500.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -420,11 +421,16 @@ public class GLRenderer implements Renderer {
         cardAnimation.dealCards();
     }
 
-    public void playCard(Card card){
+    public void playCard(final Card card){
         if(cardAnimation == null){
             cardAnimation = new CardAnimation(getGame(), ssu, context);
         }
-        cardAnimation.playCard(card);
+        ((Activity)context).runOnUiThread(new Runnable(){
+            @Override
+            public void run(){
+                cardAnimation.playCard(card);
+            }
+        });
     }
     
     /*public void sortCards(){
@@ -510,6 +516,14 @@ public class GLRenderer implements Renderer {
             setupUvs();
         }
     }
+
+    private void removeSprite(Sprite sprite){
+        if(sprites.contains(sprite)){
+            sprites.remove(sprite);
+            setupTriangle();
+            setupUvs();
+        }
+    }
     
     private void addSprites(List<Sprite> sprites){
         this.sprites.addAll(sprites);
@@ -555,5 +569,10 @@ public class GLRenderer implements Renderer {
     private void injectIntoObjectGraph(CardAnimation object){
         MainApplication app = (MainApplication)((MainActivity)context).getApplication();
         app.getMainComponent().inject(object);
+    }
+
+    public void clear(List<Card> cards){
+        getGame().sortCards(ssu);
+        rebuildSprites();
     }
 }
